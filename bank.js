@@ -114,7 +114,7 @@ var yAxis2 = d3.svg.axis()
       .scale(y)
       .orient("right")
       //.ticks(3)
-      .tickValues([-10000,5000])
+      .tickValues([-5000,5000])
       .tickFormat(formatCurrency)
       //.outerTickSize(0)
       //.tickSubdivide(1)
@@ -254,6 +254,8 @@ function formatCurrency(d) {
 }
  });
 });
+
+
 
 
  
