@@ -1,0 +1,58 @@
+.bar.positive {
+  fill: steelblue;
+}
+
+.bar.negative {
+  fill: maroon;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+/*.grid line {
+  stroke-width: .2px;
+  shape-rendering: crispEdges;
+  stroke: #fff;
+}*/
+.axis path {
+  display: none;
+}
+.axis line {
+  fill: none;
+  stroke: lightgrey;
+  
+  shape-rendering: crispEdges;
+  opacity: .75;
+}
+
+bar:hover {
+        fill: green;
+}
+
+.line {
+	/*fill: none;*/
+    stroke: lightgrey;
+    opacity: 10;
+}
+.line2 {
+	/*fill: none;*/
+    stroke: steelblue;
+    opacity: 10;
+}
+.dot {
+  stroke: #000;
+}
+
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+
+path { 
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
