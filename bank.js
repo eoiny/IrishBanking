@@ -6,6 +6,7 @@ var margin = {top: 30, right: 50, bottom: 30, left: 40},
 var events = {};
 var formatNumber = d3.format(",.0f");
 
+//the tooltip is actually a circle that follows the linechart path
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
     .style("opacity", 0);
@@ -40,6 +41,14 @@ var focus = svg2.append("g")
 
 
 var div = d3.select("svg2").select("g")
+    .append("text")
+    .attr("x", 0)             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "left")  
+    .attr("class", "info")
+    .style("opacity", 0);
+
+var div1 = d3.select("svg").select("g")
     .append("text")
     .attr("x", 0)             
     .attr("y", 0 - (margin.top / 2))
@@ -230,7 +239,7 @@ svg.append("g")
         })
         .on("mousemove", mousemove);                       // **********
 
-    function mousemove(d) {                                 // **********
+    function mousemove() {                                 // **********
         var x0 = xl.invert(d3.mouse(this)[0]),              // **********
             i = bisectDate(data, x0, 1),                   // **********
             d0 = data[i - 1],                              // **********
@@ -247,6 +256,11 @@ svg.append("g")
         .duration(200)
         .style("opacity", .9)
         .text(function(){return "Rate: "+ d.rate +"%"});
+
+        div1.transition()
+        .duration(200)
+        .style("opacity", .9)
+        .text(function(){return "Debt: \u20AC"+ d3.round(d.value/1000,2) +" billion"});
       
     } 
 
