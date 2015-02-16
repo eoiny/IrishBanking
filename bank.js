@@ -1,10 +1,10 @@
+//set up margin, variables,scales, tooltips
 var margin = {top: 30, right: 50, bottom: 30, left: 40},
     width = 900 - margin.left - margin.right,
     height = 250 - margin.top - margin.bottom;
 
 var events = {};
 var formatNumber = d3.format(",.0f");
-
 
 var tooltip = d3.select("body").append("div")
     .attr("class", "tooltip")
@@ -15,16 +15,15 @@ var parseDate = d3.time.format("%d-%b-%y").parse;
 var bisectDate = d3.bisector(function(d) { return d.date; }).left; 
 
 var parseDateEvents = d3.time.format("%d/%m/%Y").parse; 
- 
+
+//define barchart SVG 
 var svg = d3.select("#chart1").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-
-
-    
+//define linechart SVG 
 var svg2 = d3.select("#chart2").append("svg2")
     .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -32,18 +31,30 @@ var svg2 = d3.select("#chart2").append("svg2")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    //*******************************
-    var lineSvg = svg.append("g"); 
+//*******************************
+var lineSvg = svg.append("g"); 
 
-    var focus = svg2.append("g")                                
-    .style("display", "none");  
+var focus = svg2.append("g")                                
+    .style("display", "none")
+    ;  
 
-  svg2.append("text")
+
+var div = d3.select("svg2").select("g")
+    .append("text")
+    .attr("x", 0)             
+    .attr("y", 0 - (margin.top / 2))
+    .attr("text-anchor", "left")  
+    .attr("class", "info")
+    .style("opacity", 0);
+ 
+
+ //replace this hack to add a label off the y-axis
+  /*svg2.append("text")
       .attr("x", width + 25)
       .attr("y", height - 186)
       .style("font-size","11px")
       .style("text-anchor", "end")
-      .text("%");
+      .text("%");*/
 
 //read in the events & store in events object
 d3.csv("events.csv", function(error1, data1) {
@@ -68,7 +79,7 @@ d3.csv("data.csv", function(error, data) {
 
   console.log(min);
 
-  ////set y range for debt barchart
+  //set y range for debt barchart
   var y = d3.scale.linear()
     .domain([-y0/1.5, y0/1.5])
     .range([height,0])
@@ -103,21 +114,15 @@ d3.csv("data.csv", function(error, data) {
     var yAxis = d3.svg.axis()
       .scale(yl)
       .orient("right")
-      //.ticks(5)
       .tickValues([5,10,15])
-      //.outerTickSize(0)
-      //.tickSubdivide(1)
       .tickSize(width);
 
 // Define the Y-axis for Barchart
 var yAxis2 = d3.svg.axis()
       .scale(y)
       .orient("right")
-      //.ticks(3)
       .tickValues([-5000,5000])
       .tickFormat(formatCurrency)
-      //.outerTickSize(0)
-      //.tickSubdivide(1)
       .tickSize(width);
 
 svg.append("g")   
@@ -130,23 +135,18 @@ svg.append("g")
     .data(data)
   .enter().append("rect")
     .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; })
-    .on("mouseover", function() {
-            d3.select(this)
-              .attr("fill", "orange");
-         })
     .attr("y", function(d) { return y(Math.max(0, d.value)); })
-
-    //.attr("x", function(d, i) { return x(i); })
     .attr("x", function(d) { return x(d.date); })
     .attr("height", function(d) { return Math.abs(y(d.value) - y(0)); })
     .attr("width", width / data.length-1)
+
+    // cut this out and replace with area to capture mouse events like linechart
     .on('mouseover',function(d){
-  
       tempcolor = this.style.fill
-  
   d3.select(this)
     .style('fill','orange')
     .style('opacity',.5)
+    
   })
   
   //To reset the color, hence opacity = 1
@@ -155,9 +155,6 @@ svg.append("g")
       .style('opacity',1)
       .style('fill',tempcolor)
   });
-
-  
-
 
 
 // Scale the range of the data
@@ -209,6 +206,8 @@ svg.append("g")
       })
     ;
 
+  
+
     // append the circle at the intersection               // **********
     focus.append("circle")                                 // **********
         .attr("class", "y")                                // **********
@@ -223,10 +222,15 @@ svg.append("g")
         .style("fill", "none")                             // **********
         .style("pointer-events", "all")                    // **********
         .on("mouseover", function() { focus.style("display", null); })
-        .on("mouseout", function() { focus.style("display", "none"); })
+        .on("mouseout", function() { 
+          focus.style("display", "none"); 
+          div.transition()
+            .duration(500)
+            .style("opacity", 0);
+        })
         .on("mousemove", mousemove);                       // **********
 
-    function mousemove() {                                 // **********
+    function mousemove(d) {                                 // **********
         var x0 = xl.invert(d3.mouse(this)[0]),              // **********
             i = bisectDate(data, x0, 1),                   // **********
             d0 = data[i - 1],                              // **********
@@ -236,7 +240,14 @@ svg.append("g")
         focus.select("circle.y")                           // **********
             .attr("transform",                             // **********
                   "translate(" + xl(d.date) + "," +         // **********
-                                 yl(d.rate) + ")");        // **********
+                                 yl(d.rate) + ")");
+
+               //console.log(x(d.date))
+        div.transition()
+        .duration(200)
+        .style("opacity", .9)
+        .text(function(){return "Rate: "+ d.rate +"%"});
+      
     } 
 
 
