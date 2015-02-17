@@ -27,8 +27,7 @@ var barChart = svg.append("g")
 
 //define LineCHART area 
 var lineChart= svg.append("g")
-    .attr("transform", "translate(" + margin.left + "," + (height/2) + ")")
-    ;
+    .attr("transform", "translate(" + margin.left + "," + (height/2) + ")");
 
 //var lineSvg = svg.append("g"); 
 
@@ -134,7 +133,7 @@ barChart.selectAll(".bar")
     .attr("d", valueline(data));
 
 // Add the X Axis
-  lineChart.append("g")   
+  svg.append("g")   
     .attr("class", "x axis")
     .attr("transform", "translate(0," + height + ")")
     .call(xAxis);
