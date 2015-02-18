@@ -65,7 +65,7 @@ d3.csv("data.csv", function(error, data) {
 
   //set the common x range for both charts
   var x = d3.time.scale()
-       .range([0, width],.1)
+       .range([0, width])
        .domain(d3.extent(data, function(d) { return d.date; }));
 
   //set y range for debt barchart
@@ -112,10 +112,11 @@ barChart.selectAll(".bar")
     .data(data)
   .enter().append("rect")
     .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; })
+    .attr("id", function(d, i){return "bar-" + i;})
     .attr("y", function(d) { return yBar(Math.max(0, d.value)); })
-    .attr("x", function(d) { return x(d.date); })
     .attr("height", function(d) { return Math.abs(yBar(d.value) - yBar(0)); })
-    .attr("width", width / data.length-1);
+    .attr("x", function(d) { return x(d.date); })
+    .attr("width", (width / data.length )-1);
 
 
 // Scale the range of the data
@@ -161,9 +162,11 @@ barChart.selectAll(".bar")
             .style("opacity", 0);
           divLine.transition()
             .duration(500)
-            .style("opacity", 0);  
+            .style("opacity", 0);
         })
-        .on("mousemove", mousemove);                       
+        .on("mousemove", mousemove);    
+
+
 
     function mousemove() {                                 
         var x0 = x.invert(d3.mouse(this)[0]),              
@@ -177,7 +180,7 @@ barChart.selectAll(".bar")
                   "translate(" + x(d.date) + "," +         
                                  yLine(d.rate) + ")");
 
-               //console.log(x(d.date))
+        //console.log(x(d.date))
         divLine.transition()
         .duration(200)
         .style("opacity", .9)
@@ -187,12 +190,11 @@ barChart.selectAll(".bar")
         .duration(200)
         .style("opacity", .9)
         .text(function(){return "Debt: \u20AC"+ d3.round(d.value/1000,2) +" billion"});
+
+        barChart.select("#bar-" + i)
+        .style("fill", "orange");
       
     } 
-
-
-
-
 
 
 
