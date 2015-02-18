@@ -6,6 +6,9 @@
   fill: maroon;
 }
 
+.bar.selected {
+  fill: orange;
+}
 .axis text {
   font: 10px sans-serif;
 }

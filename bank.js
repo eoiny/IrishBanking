@@ -163,6 +163,10 @@ barChart.selectAll(".bar")
           divLine.transition()
             .duration(500)
             .style("opacity", 0);
+            
+            //reset class of "selected bar"
+        d3.selectAll(".selected")
+        .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; });
         })
         .on("mousemove", mousemove);    
 
@@ -191,8 +195,15 @@ barChart.selectAll(".bar")
         .style("opacity", .9)
         .text(function(){return "Debt: \u20AC"+ d3.round(d.value/1000,2) +" billion"});
 
+        //reset class of "selected bar"
+        d3.selectAll(".selected")
+        .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; });
+
+        //set current bar class to "selected"
         barChart.select("#bar-" + i)
-        .style("fill", "orange");
+        .attr("class", "bar selected");
+        
+
       
     } 
 
