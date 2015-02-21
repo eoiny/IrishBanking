@@ -68,6 +68,10 @@ d3.csv("data.csv", function(error, data) {
        .range([0, width])
        .domain(d3.extent(data, function(d) { return d.date; }));
 
+  var xbar = d3.time.scale()
+       .domain(d3.extent(data, function(d) { return d.date; }))
+       .range([width/data.length/2, width-width/data.length/2]);
+
   //set y range for debt barchart
   var yBar = d3.scale.linear()
     .domain([-y0, y0])
@@ -75,18 +79,23 @@ d3.csv("data.csv", function(error, data) {
     .nice();
 
   //set y range for unemplyment rate linechart
-  var yLine = d3.scale.linear().range([height/2, 0]);  
+  var yLine = d3.scale.linear()
+    .range([height/2, 0]);  
 
   // Define the line
   var valueline = d3.svg.line()
     .x(function(d) { return x(d.date); })
     .y(function(d) { return yLine(d.rate); });
 
+
+
   // Define the x-axis
   var xAxis = d3.svg.axis()
     .scale(x)
     .ticks(15)
     .orient("bottom");
+
+
  
   // Define the Y-axis for Linechart
   var yAxisLine = d3.svg.axis()
@@ -108,15 +117,16 @@ barChart.append("g")
     .call(yAxisBar);
   
  
-barChart.selectAll(".bar")
+barChart.selectAll("g.bar")
     .data(data)
   .enter().append("rect")
     .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; })
     .attr("id", function(d, i){return "bar-" + i;})
     .attr("y", function(d) { return yBar(Math.max(0, d.value)); })
     .attr("height", function(d) { return Math.abs(yBar(d.value) - yBar(0)); })
-    .attr("x", function(d) { return x(d.date); })
-    .attr("width", (width / data.length )-1);
+    .attr("x", function(d) { return xbar(d.date) - (width/data.length)/2;})
+    .attr("width", width/data.length -1);
+    
 
 
 // Scale the range of the data
