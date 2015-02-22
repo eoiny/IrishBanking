@@ -126,6 +126,19 @@ barChart.selectAll("g.bar")
     .attr("height", function(d) { return Math.abs(yBar(d.value) - yBar(0)); })
     .attr("x", function(d) { return xbar(d.date) - (width/data.length)/2;})
     .attr("width", width/data.length -1);
+
+//temporary addition of text to check index of bar, matches mouseover/line
+barChart.selectAll("g.bar")
+    .data(data)
+  .enter().append("text")
+    .text(function(d,i) {return i;})
+    .attr("text-anchor", "right")
+    .attr("x", function(d) { return xbar(d.date) - (width/data.length)/2;})
+    .attr("y", function(d) { return yBar(Math.max(0, d.value)); })
+    .attr("font-family", "sans-serif")
+    .attr("font-size", "11px")
+    .attr("fill", "¸black");
+
     
 
 
@@ -210,8 +223,9 @@ barChart.selectAll("g.bar")
         .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; });
 
         //set current bar class to "selected"
-        barChart.select("#bar-" + i)
+        barChart.select("#bar-" + (i))
         .attr("class", "bar selected");
+        //console.log(i-1);
         
 
       
