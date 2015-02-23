@@ -127,7 +127,7 @@ barChart.selectAll("g.bar")
     .attr("x", function(d) { return xbar(d.date) - (width/data.length)/2;})
     .attr("width", width/data.length -1);
 
-//temporary addition of text to check index of bar, matches mouseover/line
+/*//temporary addition of text to check index of bar, matches mouseover/line
 barChart.selectAll("g.bar")
     .data(data)
   .enter().append("text")
@@ -138,7 +138,7 @@ barChart.selectAll("g.bar")
     .attr("font-family", "sans-serif")
     .attr("font-size", "11px")
     .attr("fill", "¸black");
-
+*/
     
 
 
@@ -166,7 +166,7 @@ barChart.selectAll("g.bar")
 // append the circle to the line               
     focus.append("circle")                                 
       .attr("class", "y")                                
-      .style("fill", "none")                             
+      .style("fill", "red")                             
       .style("stroke", "red")                           
       .attr("r", 4);                                     
     
@@ -200,7 +200,8 @@ barChart.selectAll("g.bar")
             i = bisectDate(data, x0, 1),                   
             d0 = data[i - 1],                              
             d1 = data[i],                                  
-            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0,
+            j = x0 - d0.date > d1.date - x0 ? i : i-1;     
 
         focus.select("circle.y")                           
             .attr("transform",                             
@@ -223,9 +224,9 @@ barChart.selectAll("g.bar")
         .attr("class", function(d) { return d.value < 0 ? "bar negative" : "bar positive"; });
 
         //set current bar class to "selected"
-        barChart.select("#bar-" + (i))
+        barChart.select("#bar-" + (j))
         .attr("class", "bar selected");
-        //console.log(i-1);
+      
         
 
       
