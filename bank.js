@@ -31,8 +31,7 @@ var lineChart= svg.append("g")
 
 //var lineSvg = svg.append("g"); 
 
-var focus = lineChart.append("g")                                
-    .style("display", "none");  
+
 
 var divBar = d3.select("svg").select("g")
     .append("text")
@@ -71,6 +70,10 @@ d3.csv("data.csv", function(error, data) {
   var xbar = d3.time.scale()
        .domain(d3.extent(data, function(d) { return d.date; }))
        .range([width/data.length/2, width-width/data.length/2]);
+
+  var focus = lineChart.append("g") 
+    .attr("transform", "translate("+(-4)+")")                               
+    .style("display", "none");
 
   //set y range for debt barchart
   var yBar = d3.scale.linear()
@@ -152,7 +155,9 @@ barChart.selectAll("g.bar")
     .call(yAxisLine);
 
 // Add the valueline path.
-  lineChart.append("path")
+  lineChart.append("g")
+    .attr("transform", "translate("+(-3)+")")
+    .append("path")
     .attr("class", "line2")
     .attr("d", valueline(data));
 
@@ -205,7 +210,7 @@ barChart.selectAll("g.bar")
 
         focus.select("circle.y")                           
             .attr("transform",                             
-                  "translate(" + x(d.date) + "," +         
+                  "translate(" + x(d.date)+ "," +         
                                  yLine(d.rate) + ")");
 
         //console.log(x(d.date))
