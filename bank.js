@@ -1,6 +1,6 @@
 //set up margin, variables,scales, tooltips
 var margin = {top: 20, right: 50, bottom: 20, left: 40},
-    width = 900 - margin.left - margin.right,
+    width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var events = [];
@@ -65,6 +65,7 @@ d3.csv("data.csv", function(error, data) {
   //set the common x range for both charts
   var x = d3.time.scale()
        .range([0, width])
+       //.domain(d3.extent(data, function(d) { return d.date; }));
        .domain(d3.extent(data, function(d) { return d.date; }));
 
   var xbar = d3.time.scale()
@@ -154,6 +155,13 @@ barChart.selectAll("g.bar")
     .attr("class", "y axis")
     .call(yAxisLine);
 
+// append the circle to the line               
+    focus.append("circle")                                 
+      .attr("class", "y")                                
+      .style("fill", "red")                             
+      .style("stroke", "red")                           
+      .attr("r", 4);  
+
 // Add the valueline path.
   lineChart.append("g")
     .attr("transform", "translate("+(-3)+")")
@@ -164,16 +172,12 @@ barChart.selectAll("g.bar")
 // Add the X Axis
   svg.append("g")   
     .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
+    .attr("transform", "translate(" + margin.left + "," + height + ")")
+    //.attr("transform", "translate(" + margin.left + "," + (height/2) + ")");
     .call(xAxis);
  
 
-// append the circle to the line               
-    focus.append("circle")                                 
-      .attr("class", "y")                                
-      .style("fill", "red")                             
-      .style("stroke", "red")                           
-      .attr("r", 4);                                     
+                                   
     
     // append the rectangle to capture mouse              
     svg.append("rect")                                    
