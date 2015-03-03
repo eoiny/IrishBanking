@@ -3,7 +3,7 @@ var margin = {top: 20, right: 50, bottom: 20, left: 40},
     width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var events = [];
+//var events = [];
 var formatNumber = d3.format(",.0f");
 
 //the tooltip is actually a circle that follows the linechart path
@@ -21,6 +21,14 @@ var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
+/*var svgNews = d3.select("#news").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom);
+
+ var news =  svgNews.append("g")     
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+*/
+
 //define barCHART area 
 var barChart = svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -29,11 +37,15 @@ var barChart = svg.append("g")
 var lineChart= svg.append("g")
     .attr("transform", "translate(" + margin.left + "," + (height/2) + ")");
 
+//define barCHART area 
+/*var newsText = svgNews.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+*/
 //var lineSvg = svg.append("g"); 
 
 
 
-var divBar = d3.select("svg").select("g")
+var divBar = d3.select("#chart").select("g")
     .append("text")
     .attr("x", 0)             
     .attr("y", 0 + (margin.top / 2))
@@ -41,7 +53,7 @@ var divBar = d3.select("svg").select("g")
     .attr("class", "info")
     .style("opacity", 0);
 
- var divLine = d3.select("svg").select("g")
+ var divLine = d3.select("#chart").select("g")
     .append("text")
     .attr("x", 0)             
     .attr("y", 0 + (height/2))
@@ -49,18 +61,63 @@ var divBar = d3.select("svg").select("g")
     .attr("class", "info")
     .style("opacity", 0);
 
+var newsText = d3.select("#news").select("g")
+    .append("text")
+    .attr("x", 0)             
+    .attr("y", 0 + (margin.top / 2))
+    .attr("dy", ".71em")
+    .style("font-size","13px")
+    //.attr("text-anchor", "left")  
+    //.attr("class", "info")
+    .style("color", "red")
 
+    .text("eoin");
+
+
+d3.csv("events.csv", function(error1, data1) {
+  
+  
+
+//need to load an array of relevant events here i.e. within a given date range
+newsText.selectAll("p")
+  .data(data1)
+.enter()
+  .append("p")
+  .text(function(d) { return d.date;});
+
+  });
+
+//.text("hello");
+
+//.key(function(d) { return d.date; })
+//.sortKeys(d3.ascending)
+//.entries(data1);
+
+//
 
 //read economic data
 d3.csv("data.csv", function(error, data) {
   data.forEach(function(d) {
         d.date = parseDate(d.date);
         d.rate = +d.rate;
+        
    });  
+//console.log(events);
 
   var max = d3.max(data, function(d) { return +d.value});
   var min = d3.min(data, function(d) { return +d.value});
   var y0 = Math.max(Math.abs(min), Math.abs(max));
+
+  var range = d3.extent(data, function(d) { return d.date; });
+
+  
+
+//console.log(events)
+
+
+
+ 
+ // console.log(range);
 
   //set the common x range for both charts
   var x = d3.time.scale()
@@ -202,6 +259,8 @@ barChart.selectAll("g.bar")
         })
         .on("mousemove", mousemove);    
 
+        //console.log(events[0].date);  
+
 
 
     function mousemove() {                                 
@@ -235,7 +294,22 @@ barChart.selectAll("g.bar")
         //set current bar class to "selected"
         barChart.select("#bar-" + (j))
         .attr("class", "bar selected");
+
+        //news.append("text")
+        //.text("Shauna, I love you, you rock!, you deserve a brit. ");
+
+        //d3.extent(data, function(d) { return d.date; })
+
+
+
       
+      /*svgNews.append("g")
+          .append("text")
+          .attr("x", 5})
+          .attr("y", 100)
+          .attr("dy", ".35em")
+            .text(i);  */
+
         
 
       
@@ -251,6 +325,7 @@ function formatCurrency(d) {
       : s;
 }
  });
+ //});
 
 
 
