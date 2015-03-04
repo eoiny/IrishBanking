@@ -3,7 +3,7 @@ var margin = {top: 20, right: 50, bottom: 20, left: 40},
     width = 500 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-//var events = [];
+var events = [];
 var formatNumber = d3.format(",.0f");
 
 //the tooltip is actually a circle that follows the linechart path
@@ -61,7 +61,7 @@ var divBar = d3.select("#chart").select("g")
     .attr("class", "info")
     .style("opacity", 0);
 
-var newsText = d3.select("#news").select("g")
+var newsText = d3.select("#news").append("g")
     .append("text")
     .attr("x", 0)             
     .attr("y", 0 + (margin.top / 2))
@@ -69,23 +69,11 @@ var newsText = d3.select("#news").select("g")
     .style("font-size","13px")
     //.attr("text-anchor", "left")  
     //.attr("class", "info")
-    .style("color", "red")
-
-    .text("eoin");
+    .style("color", "red");
 
 
-d3.csv("events.csv", function(error1, data1) {
-  
-  
 
-//need to load an array of relevant events here i.e. within a given date range
-newsText.selectAll("p")
-  .data(data1)
-.enter()
-  .append("p")
-  .text(function(d) { return d.date;});
 
-  });
 
 //.text("hello");
 
@@ -269,7 +257,13 @@ barChart.selectAll("g.bar")
             d0 = data[i - 1],                              
             d1 = data[i],                                  
             d = x0 - d0.date > d1.date - x0 ? d1 : d0,
-            j = x0 - d0.date > d1.date - x0 ? i : i-1;     
+            j = x0 - d0.date > d1.date - x0 ? i : i-1,
+            start = d.date,
+            end = d3.time.month.offset(d.date, 3);
+             
+   
+     
+
 
         focus.select("circle.y")                           
             .attr("transform",                             
@@ -310,7 +304,22 @@ barChart.selectAll("g.bar")
           .attr("dy", ".35em")
             .text(i);  */
 
-        
+        d3.csv("events.csv", function(error1, data1) {
+//need to load an array of relevant events here i.e. within a given date range
+newsText.selectAll("text")
+  .data(data1)
+.enter()
+  .append("p")
+  .text(function(e) { 
+    if (parseDateEvents(e.date) > start && parseDateEvents(e.date) < end)
+    {return e.headline} 
+  console.log(e.headline)
+  ;});
+
+  //  events = data1;
+  //console.log("date1:"+d.date+"date2:"+end);
+
+  });
 
       
     } 
