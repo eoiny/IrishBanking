@@ -1,7 +1,7 @@
 //setup margin
 var margin = {top: 20, right: 50, bottom: 20, left: 20},
     width = 900 - margin.left - margin.right,
-    height = 550 - margin.top - margin.bottom;
+    height = 650 - margin.top - margin.bottom;
 
 // Parse the date / time
 var parseDate = d3.time.format("%d/%m/%Y").parse; 
@@ -111,7 +111,7 @@ function mousemove() {
                 .duration(200)      
                 .style("opacity", .9); 
 
-        div .html(formatTime(d.date) + "<br/>"  + d.rate)  
+        div.html(d.date + "<br/>"  + d.rate)  
                 .style("left", (d3.event.pageX) + "px")     
                 .style("top", (d3.event.pageY - 28) + "px");                                  
     }
