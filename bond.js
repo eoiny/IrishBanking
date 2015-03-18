@@ -131,8 +131,17 @@ function mousemove() {
         tooltip.style("left", "55px")
                .style("top", "55px");
 
+var selDate = d3.time.month(d.date);
+var headlines = events.map(function(selDate,arr){
+   var harr = [];
+   
 
-        tooltip.select(".news").html(d.date + "<br/>"  + d.rate);  
+});
+
+    console.log(events);
+
+        tooltip.select(".news").html("Date: " +selDate + "<br/> unemp rate: "  + d.rate);  
+        tooltip.select(".events").html("Headline:");  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
