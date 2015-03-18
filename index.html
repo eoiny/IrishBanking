@@ -6,13 +6,16 @@
 	<link rel="stylesheet" type="text/css" href="style.css" /> 
 	
     <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/queue.v1.min.js"></script>
 	
   </head>
 <body>
 <div class="container">	
 <div class="headline">Irish 10-year Bond Rate During the Banking Crisis</div>
 <div class="blurb">The following chart tracks the 10-year bond rate changes over the years of the Irish backing crisis. As a trip down Memory Lane we have a look at some of the news headlines and how the crisis affected the Employment rate and national debt. </div>
-  <div align id="chart">
+  <div align id = "chart">
+  	<div id = "tooltip" class = "tooltip">
+  		<div class = "news"></div>
 </div>
 </div>
   <script type="text/javascript" src="bond.js"></script>

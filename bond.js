@@ -6,6 +6,7 @@ var margin = {top: 20, right: 50, bottom: 20, left: 20},
 // Parse the date / time
 var parseDate = d3.time.format("%d/%m/%Y").parse; 
     bisectDate = d3.bisector(function(d) { return d.date; }).left;
+    parseDateEvents = d3.time.format("%d/%m/%Y").parse; 
 
 // Set the ranges
 var x = d3.time.scale().range([0, width]),
@@ -40,16 +41,32 @@ var svg = d3.select("#chart").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var tooltip = d3.select("#tooltip")
+    .style("opacity", 0);
+
+
 var lineSvg = svg.append("g");                    
 
 var focus = svg.append("g")                          
     .style("display", "none"); 
 
 //tooltip
-var div = d3.select("body").append("div")   
+/*var div = d3.select("chart").append("div")   
     .attr("class", "tooltip")               
-    .style("opacity", 0);
+    .style("opacity", 0);*/
+d3.csv("events.csv", function(error, events) {
+   /* events.forEach(function(d) {
+        d.eventDate = parseDateEvents(d.date);
+        
+   });  */
 
+var events = d3.nest()
+  .key(function(d){ return d3.time.month(parseDateEvents(d.date)); })
+  .entries(events);
+console.log(events);
+ 
+
+  //console.log(d.eventDate);  
 //read in data
 d3.csv("banks.csv", function(error, data) {
   data.forEach(function(d) {
@@ -107,25 +124,30 @@ function mousemove() {
                   "translate(" + x(d.date) + "," +         
                                  y(d.rate) + ")");  
 
-        div.transition()        
+        tooltip.transition()        
                 .duration(200)      
                 .style("opacity", .9); 
+        
+        tooltip.style("left", "55px")
+               .style("top", "55px");
 
-        div.html(d.date + "<br/>"  + d.rate)  
-                .style("left", (d3.event.pageX) + "px")     
-                .style("top", (d3.event.pageY - 28) + "px");                                  
+
+        tooltip.select(".news").html(d.date + "<br/>"  + d.rate);  
+               // .style("left", (d3.event.pageX) + "px")     
+               // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
 
  function mouseout(){
  	focus.style("display", null);
 
- 	div.transition()
+ 	tooltip.transition()
       .duration(500)
       .style("opacity", 1e-6);
 
  }
                                                      
 
+})
 });
 
 
