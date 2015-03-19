@@ -147,9 +147,12 @@ var result = events.filter(function(v){
 
    // console.log(result[0].key);
 
-   var balls = events.map(function(g) {
+   var headlines = events.map(function(g) {
+    //put a conditional here checking what quarter a date is in
+    //then only return the headlines & dates as an array of objs
+    //[{date:headline}, {date:headline},..etc.]
     return {
-      value: g.values[0].headline,
+      headlines: g.values,
       month: g.key
       //quarter: (Math.floor((new Date(Date.parse(entry.key + "1, 2013")).getMonth()+1)/3+1)) 
     };
