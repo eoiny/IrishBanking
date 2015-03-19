@@ -7,6 +7,7 @@ var margin = {top: 20, right: 50, bottom: 20, left: 20},
 var parseDate = d3.time.format("%d/%m/%Y").parse; 
     bisectDate = d3.bisector(function(d) { return d.date; }).left;
     parseDateEvents = d3.time.format("%d/%m/%Y").parse; 
+    compareDate = d3.time.format("%Y-%m");
 
 // Set the ranges
 var x = d3.time.scale().range([0, width]),
@@ -63,7 +64,12 @@ d3.csv("events.csv", function(error, events) {
 var events = d3.nest()
   .key(function(d){ return d3.time.month(parseDateEvents(d.date)); })
   .entries(events);
+
+  //var test = d3.values(events[3])
+  var test = d3.values(events)
+//console.log(test[0].key);
 console.log(events);
+
  
 
   //console.log(d.eventDate);  
@@ -132,13 +138,23 @@ function mousemove() {
                .style("top", "55px");
 
 var selDate = d3.time.month(d.date);
-var headlines = events.map(function(selDate,arr){
-   var harr = [];
-   
 
+selDate = compareDate(new Date(selDate));
+
+var result = events.filter(function(v){
+  return compareDate(new Date(v.key)) > selDate;
 });
 
-    console.log(events);
+   // console.log(result[0].key);
+
+   var balls = events.map(function(g) {
+    return {
+      value: g.values[0].headline,
+      month: g.key
+      //quarter: (Math.floor((new Date(Date.parse(entry.key + "1, 2013")).getMonth()+1)/3+1)) 
+    };
+  });
+   console.log(balls);
 
         tooltip.select(".news").html("Date: " +selDate + "<br/> unemp rate: "  + d.rate);  
         tooltip.select(".events").html("Headline:");  
