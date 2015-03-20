@@ -55,20 +55,30 @@ var focus = svg.append("g")
 /*var div = d3.select("chart").append("div")   
     .attr("class", "tooltip")               
     .style("opacity", 0);*/
-d3.csv("events.csv", function(error, events) {
-   /* events.forEach(function(d) {
-        d.eventDate = parseDateEvents(d.date);
-        
-   });  */
+d3.csv("news.csv", function(error, events) {
+    events.forEach(function(d) {
+        d.date = parseDateEvents(d.date);
+   });  
 
-var events = d3.nest()
+/*var events = d3.nest()
   .key(function(d){ return d3.time.month(parseDateEvents(d.date)); })
-  .entries(events);
+  .entries(events);*/
 
   //var test = d3.values(events[3])
-  var test = d3.values(events)
+  //var test = d3.values(events)
 //console.log(test[0].key);
+
+/*events = d3.entries(events);
 console.log(events);
+
+events = events.map(function(g){
+  return{
+    quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
+    headline: g.news,
+    stamp: g.stamp
+  }
+})
+console.log(events);*/
 
  
 
@@ -123,7 +133,13 @@ function mousemove() {
             i = bisectDate(data, x0, 1),                   
             d0 = data[i - 1],                              
             d1 = data[i],                                  
-            d = x0 - d0.date > d1.date - x0 ? d1 : d0;     
+            d = x0 - d0.date > d1.date - x0 ? d1 : d0;   
+
+         //calculate what quarter d.date is in   
+         var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
+         console.log(selQuarter)  
+
+
 
         focus.select("circle.y")                           
             .attr("transform",                             
@@ -137,29 +153,9 @@ function mousemove() {
         tooltip.style("left", "55px")
                .style("top", "55px");
 
-var selDate = d3.time.month(d.date);
 
-selDate = compareDate(new Date(selDate));
 
-var result = events.filter(function(v){
-  return compareDate(new Date(v.key)) > selDate;
-});
-
-   // console.log(result[0].key);
-
-   var headlines = events.map(function(g) {
-    //put a conditional here checking what quarter a date is in
-    //then only return the headlines & dates as an array of objs
-    //[{date:headline}, {date:headline},..etc.]
-    return {
-      headlines: g.values,
-      month: g.key
-      //quarter: (Math.floor((new Date(Date.parse(entry.key + "1, 2013")).getMonth()+1)/3+1)) 
-    };
-  });
-   console.log(balls);
-
-        tooltip.select(".news").html("Date: " +selDate + "<br/> unemp rate: "  + d.rate);  
+        tooltip.select(".news").html("Date: " +d.date + "<br/> unemp rate: "  + d.rate);  
         tooltip.select(".events").html("Headline:");  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
