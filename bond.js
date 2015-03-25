@@ -147,13 +147,23 @@ function mousemove() {
          //var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
          var selQuarter = "Q"+Math.floor(((d.date).getMonth()+1)/3+1)+"-"+(d.date).getFullYear();
 
+         function filterByQtr(element) {
+          if (element.key = selQuarter) {
+            return true;
+          } else {
+            return false;
+          }
+        }
 
+         var arrByQtr = events.filter(filterByQtr);
+
+        
          console.log(selQuarter)  
-         events.filter(function(d) {
+        /* events.filter(function(d) {
             return (d.key === selQuarter)
-            });
+            });*/
 
-         console.log(events) 
+         console.log(arrByQtr) 
 
 
 
@@ -185,6 +195,9 @@ function mousemove() {
       .style("opacity", 1e-6);
 
  }
+
+ 
+
                                                      
 
 })
