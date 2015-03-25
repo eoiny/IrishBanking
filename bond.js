@@ -71,14 +71,22 @@ d3.csv("news.csv", function(error, events) {
 /*events = d3.entries(events);
 console.log(events);
 
+*/
+//calculate the qtr + year for each date and map to a events object
 events = events.map(function(g){
-  return{
-    quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
+  return {
+    //quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
+    quarter: "Q"+Math.floor(((g.date).getMonth()+1)/3+1)+"-"+(g.date).getFullYear(),
     headline: g.news,
     stamp: g.stamp
-  }
-})
-console.log(events);*/
+  };
+});
+//rollup events per qtr
+events = d3.nest()
+.key(function(d) { return d.quarter; })
+.entries(events);
+
+console.log(events);
 
  
 
@@ -136,8 +144,16 @@ function mousemove() {
             d = x0 - d0.date > d1.date - x0 ? d1 : d0;   
 
          //calculate what quarter d.date is in   
-         var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
+         //var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
+         var selQuarter = "Q"+Math.floor(((d.date).getMonth()+1)/3+1)+"-"+(d.date).getFullYear();
+
+
          console.log(selQuarter)  
+         events.filter(function(d) {
+            return (d.key === selQuarter)
+            });
+
+         console.log(events) 
 
 
 
