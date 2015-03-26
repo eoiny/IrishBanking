@@ -76,7 +76,7 @@ console.log(events);
 events = events.map(function(g){
   return {
     //quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
-    quarter: "Q"+Math.floor(((g.date).getMonth()+3)/3)+"-"+(g.date).getFullYear(),
+    quarter: "Q"+Math.floor((g.date.getMonth() +3) / 3)+"-"+(g.date).getFullYear(),
     headline: g.news,
     stamp: g.stamp
   };
@@ -145,15 +145,20 @@ function mousemove() {
 
          //calculate what quarter d.date is in   
          //var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
-         var selQuarter = "Q"+Math.floor(((d.date).getMonth()+3)/3)+"-"+(d.date).getFullYear();
+         var selQuarter = "Q"+Math.floor((d.date.getMonth() +3) / 3)+"-"+(d.date).getFullYear();
 
          //console.log(selQuarter)
 
-         var filteredNews = events.filter(function (el) {
-          return el.key[0] = selQuarter;
-         });
+       /*  var filteredNews = events.filter(function (el) {
+          return el.key = selQuarter;
+         });*/
+
+         var filteredNews = events.filter(function(obj) {
+          return (obj.key == "Q1-2009");
+        });
 
          console.log(filteredNews) 
+         //quarter: "Q1-2007"
 
 
 
