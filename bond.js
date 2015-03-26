@@ -76,7 +76,7 @@ console.log(events);
 events = events.map(function(g){
   return {
     //quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
-    quarter: "Q"+Math.floor(((g.date).getMonth()+1)/3+1)+"-"+(g.date).getFullYear(),
+    quarter: "Q"+Math.floor(((g.date).getMonth()+3)/3)+"-"+(g.date).getFullYear(),
     headline: g.news,
     stamp: g.stamp
   };
@@ -145,25 +145,25 @@ function mousemove() {
 
          //calculate what quarter d.date is in   
          //var selQuarter = Math.floor(((d.date).getMonth()+1)/3+1);
-         var selQuarter = "Q"+Math.floor(((d.date).getMonth()+1)/3+1)+"-"+(d.date).getFullYear();
+         var selQuarter = "Q"+Math.floor(((d.date).getMonth()+3)/3)+"-"+(d.date).getFullYear();
 
-         function filterByQtr(element) {
-          if (element.key = selQuarter) {
-            return true;
-          } else {
-            return false;
-          }
-        }
+         //console.log(selQuarter)
 
-         var arrByQtr = events.filter(filterByQtr);
+         var filteredNews = events.filter(function (el) {
+          return el.key[0] = selQuarter;
+         });
+
+         console.log(filteredNews) 
+
+
 
         
-         console.log(selQuarter)  
+         //console.log(selQuarter)  
         /* events.filter(function(d) {
             return (d.key === selQuarter)
             });*/
 
-         console.log(arrByQtr) 
+         //console.log(events) 
 
 
 
