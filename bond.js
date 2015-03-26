@@ -154,7 +154,9 @@ function mousemove() {
          });*/
 
          var filteredNews = events.filter(function(obj) {
-          return (obj.key == "Q1-2009");
+          //return (obj.key == "Q1-2009");
+          //console.log(selQuarter)
+          return (obj.key == selQuarter);
         });
 
          console.log(filteredNews) 
@@ -187,7 +189,7 @@ function mousemove() {
 
 
         tooltip.select(".news").html("Date: " +d.date + "<br/> unemp rate: "  + d.rate);  
-        tooltip.select(".events").html("Headline:");  
+        tooltip.select(".events").html("Headline:"+filteredNews.key);  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
