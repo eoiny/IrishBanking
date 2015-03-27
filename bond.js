@@ -159,8 +159,12 @@ function mousemove() {
           return (obj.key == selQuarter);
         });
 
-         console.log(filteredNews) 
+         var test = d3.values(events)
+         console.log(test[0][values][0]);
+
+        // console.log(filteredNews.headline) 
          //quarter: "Q1-2007"
+
 
 
 
@@ -189,7 +193,7 @@ function mousemove() {
 
 
         tooltip.select(".news").html("Date: " +d.date + "<br/> unemp rate: "  + d.rate);  
-        tooltip.select(".events").html("Headline:"+filteredNews.key);  
+        tooltip.select(".events").html("Headline:"+test[0].key);  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
