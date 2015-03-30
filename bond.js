@@ -182,22 +182,6 @@ function mousemove() {
          //console.log(news[0].values[0].headline);
          console.log(news.length)
 
-        // console.log(filteredNews.headline) 
-         //quarter: "Q1-2007"
-
-
-
-
-        
-         //console.log(selQuarter)  
-        /* events.filter(function(d) {
-            return (d.key === selQuarter)
-            });*/
-
-         //console.log(events) 
-
-
-
         focus.select("circle.y")                           
             .attr("transform",                             
                   "translate(" + x(d.date) + "," +         
@@ -210,10 +194,17 @@ function mousemove() {
         tooltip.style("left", "55px")
                .style("top", "55px");
 
+      d3.selectAll(".info").remove(); 
 
-
-        tooltip.select(".news").html("Date: " +d.date + "<br/> unemp rate: "  + d.rate);  
-        tooltip.select(".events").html("Headline:"+news[0].values[0].headline);  
+        tooltip.select(".news").html("Date: <b>" +compareDate(d.date) + "</b><br/> unemp rate: "  + d.rate);  
+        tooltip.selectAll(".events")
+        .data(news[0].values)
+        .enter().append("g")
+        .attr("class", "info")
+        .append("text")
+        .html(function(d,i) {
+          return 'Headlinez:'+d.headline+"<br>";
+          });  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
