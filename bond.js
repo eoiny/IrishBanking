@@ -73,6 +73,7 @@ console.log(events);
 
 */
 //calculate the qtr + year for each date and map to a events object
+
 events = events.map(function(g){
   return {
     //quarter: (Math.floor(new Date((g.date).getMonth()+1)/3+1)),
@@ -81,10 +82,15 @@ events = events.map(function(g){
     stamp: g.stamp
   };
 });
+
 //rollup events per qtr
 events = d3.nest()
 .key(function(d) { return d.quarter; })
 .entries(events);
+
+      
+//***************
+
 
 console.log(events);
 
@@ -159,8 +165,22 @@ function mousemove() {
           return (obj.key == selQuarter);
         });
 
-         var test = d3.values(events)
-         console.log(test[0][values][0]);
+         //var test = d3.values(events);
+
+         var news = d3.values(filteredNews);
+         var news = filteredNews;
+          //.data(d3.values(events));
+
+          /*
+          .enter().append("g")
+          .attr("class", "news")
+          .append("text")
+          .text(function(d) { return d.headline; });
+*/
+
+
+         //console.log(news[0].values[0].headline);
+         console.log(news.length)
 
         // console.log(filteredNews.headline) 
          //quarter: "Q1-2007"
@@ -193,7 +213,7 @@ function mousemove() {
 
 
         tooltip.select(".news").html("Date: " +d.date + "<br/> unemp rate: "  + d.rate);  
-        tooltip.select(".events").html("Headline:"+test[0].key);  
+        tooltip.select(".events").html("Headline:"+news[0].values[0].headline);  
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
