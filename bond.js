@@ -4,10 +4,11 @@ var margin = {top: 20, right: 50, bottom: 20, left: 20},
     height = 650 - margin.top - margin.bottom;
 
 // Parse the date / time
-var parseDate = d3.time.format("%d/%m/%Y").parse; 
-    bisectDate = d3.bisector(function(d) { return d.date; }).left;
-    parseDateEvents = d3.time.format("%d/%m/%Y").parse; 
-    compareDate = d3.time.format("%Y-%m");
+var parseDate = d3.time.format("%d/%m/%Y").parse, 
+    bisectDate = d3.bisector(function(d) { return d.date; }).left,
+    parseDateEvents = d3.time.format("%d/%m/%Y").parse, 
+    compareDate = d3.time.format("%Y-%m"),
+    newsDate = d3.time.format("%d %b");
 
 // Set the ranges
 var x = d3.time.scale().range([0, width]),
@@ -58,6 +59,7 @@ var focus = svg.append("g")
 d3.csv("news.csv", function(error, events) {
     events.forEach(function(d) {
         d.date = parseDateEvents(d.date);
+        //d.news = d.news.replace("\u20ac", 'Euro')
    });  
 
 /*var events = d3.nest()
@@ -194,17 +196,22 @@ function mousemove() {
         tooltip.style("left", "55px")
                .style("top", "55px");
 
-      d3.selectAll(".info").remove(); 
+      
 
-        tooltip.select(".news").html("Date: <b>" +compareDate(d.date) + "</b><br/> unemp rate: "  + d.rate);  
+      if(news.length>0){ 
+        d3.selectAll(".info").remove();
+
+        tooltip.select(".news").html("Quarter: <b>" +selQuarter + "</b><br/> unemp rate: "  + d.rate);  
         tooltip.selectAll(".events")
         .data(news[0].values)
         .enter().append("g")
         .attr("class", "info")
         .append("text")
-        .html(function(d,i) {
-          return 'Headlinez:'+d.headline+"<br>";
+        .html(function(e) {
+
+          return '<b>'+newsDate(new Date(e.stamp))+'</b>:'+e.headline+"<br>";
           });  
+      }
                // .style("left", (d3.event.pageX) + "px")     
                // .style("top", (d3.event.pageY - 28) + "px");                                  
     }
